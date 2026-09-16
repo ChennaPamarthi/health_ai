@@ -1,0 +1,36 @@
+.reminder-list {
+    display: grid;
+    gap: 14px;
+}
+
+.reminder-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 18px;
+}
+
+.reminder-time {
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.reminder-title {
+    font-weight: 700;
+    margin: 2px 0 0;
+}
+
+.reminder-meta {
+    color: var(--muted);
+    font-size: 0.88rem;
+}
+
+.reminder-actions {
+    display: inline-flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.reminder-actions .btn {
+    padding: 0.45rem 0.7rem;
+}

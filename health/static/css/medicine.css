@@ -1,0 +1,205 @@
+.medicine-toolbar {
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border);
+    padding: 18px;
+    box-shadow: var(--shadow);
+}
+
+.filter-group {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.filter-btn {
+    min-width: 92px;
+}
+
+.filter-btn.active {
+    background: var(--primary);
+    color: #fff;
+}
+
+.medicine-stat {
+    color: #fff;
+    border-radius: var(--radius-xl);
+    padding: 22px;
+    min-height: 150px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.medicine-stat::after {
+    content: "";
+    position: absolute;
+    inset: auto -20px -20px auto;
+    width: 95px;
+    height: 95px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.medicine-stat i {
+    font-size: 1.65rem;
+    margin-bottom: 16px;
+}
+
+.medicine-stat h2 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.medicine-stat p {
+    margin: 0.35rem 0 0;
+    opacity: 0.9;
+}
+
+.medicine-stat.blue {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+}
+
+.medicine-stat.green {
+    background: linear-gradient(135deg, #10b981, #047857);
+}
+
+.medicine-stat.orange {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.medicine-stat.red {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.medicine-row-actions {
+    display: inline-flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.medicine-row-actions .btn {
+    padding: 0.45rem 0.7rem;
+}
+
+.medicine-name-cell {
+    min-width: 180px;
+}
+
+.medicine-subtext {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: 0.84rem;
+}
+
+.schedule-list {
+    display: grid;
+    gap: 12px;
+}
+
+.schedule-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border-radius: 18px;
+    padding: 16px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+}
+
+.schedule-item .schedule-time {
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.schedule-item .schedule-name {
+    font-weight: 700;
+}
+
+.schedule-item .schedule-meta {
+    color: var(--muted);
+    font-size: 0.86rem;
+}
+
+.schedule-actions {
+    display: inline-flex;
+    gap: 6px;
+}
+
+.schedule-actions .btn {
+    padding: 0.45rem 0.65rem;
+}
+
+.detail-grid {
+    display: grid;
+    gap: 16px;
+}
+
+.detail-section {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 18px;
+}
+
+.detail-section h5 {
+    margin-bottom: 14px;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(100, 116, 139, 0.16);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 700;
+    color: var(--muted);
+}
+
+.detail-value {
+    text-align: right;
+}
+
+.instruction-box {
+    white-space: pre-line;
+    line-height: 1.7;
+    color: var(--text);
+}
+
+.pagination .page-link {
+    border-radius: 12px;
+    margin: 0 3px;
+}
+
+.pagination .page-item.active .page-link {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.loading-block {
+    padding: 18px;
+}
+
+@media (max-width: 767.98px) {
+    .medicine-row-actions {
+        justify-content: flex-start;
+    }
+
+    .schedule-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

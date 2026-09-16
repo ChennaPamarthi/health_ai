@@ -1,0 +1,47 @@
+.appointment-stat,
+.reminder-stat,
+.analytics-stat {
+    color: #fff;
+    border-radius: var(--radius-xl);
+    padding: 22px;
+    box-shadow: var(--shadow);
+    min-height: 120px;
+}
+
+.appointment-stat h2,
+.reminder-stat h2,
+.analytics-stat h2 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.appointment-stat p,
+.reminder-stat p,
+.analytics-stat p {
+    margin: 0.35rem 0 0;
+    opacity: 0.9;
+}
+
+.stat-blue { background: linear-gradient(135deg, #2563eb, #1e40af); }
+.stat-green { background: linear-gradient(135deg, #10b981, #047857); }
+.stat-amber { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.stat-rose { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+.appointment-detail-grid {
+    display: grid;
+    gap: 14px;
+}
+
+.appointment-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(37, 99, 235, 0.08);
+    color: var(--primary);
+    font-weight: 600;
+    margin-right: 0.4rem;
+    margin-bottom: 0.4rem;
+}

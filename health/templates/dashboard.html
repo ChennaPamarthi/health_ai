@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header animate-fade-up">
+    <div>
+        <div class="page-kicker">Overview</div>
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-subtitle">Track prescriptions, medicines, reports, reminders, and appointments from one clean workspace.</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+        <a href="{% url 'upload' %}" class="btn btn-primary">
+            <i class="fa-solid fa-cloud-arrow-up me-2"></i>
+            Upload Document
+        </a>
+        <a href="{% url 'medicines' %}" class="btn btn-outline-primary">
+            <i class="fa-solid fa-pills me-2"></i>
+            View Medicines
+        </a>
+    </div>
+</div>
+
+<div class="row g-3 mb-4" id="dashboard-metrics">
+    <div class="col-lg-3 col-md-6">
+        <div class="metric-card metric-blue">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="section-label text-white-50">Prescriptions</div>
+                    <h2 id="metric-prescriptions">0</h2>
+                    <p>Uploaded records</p>
+                </div>
+                <i class="fa-solid fa-file-medical metric-icon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="metric-card metric-teal">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="section-label text-white-50">Medicines</div>
+                    <h2 id="metric-medicines">0</h2>
+                    <p>Active medicines</p>
+                </div>
+                <i class="fa-solid fa-pills metric-icon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="metric-card metric-amber">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="section-label text-white-50">Reminders</div>
+                    <h2 id="metric-reminders">0</h2>
+                    <p>Scheduled today</p>
+                </div>
+                <i class="fa-solid fa-bell metric-icon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="metric-card metric-rose">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="section-label text-white-50">Appointments</div>
+                    <h2 id="metric-appointments">0</h2>
+                    <p>Booked visits</p>
+                </div>
+                <i class="fa-solid fa-calendar-check metric-icon"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="metric-card metric-blue">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <div class="section-label text-white-50">Reports</div>
+                    <h2 id="metric-reports">0</h2>
+                    <p>Structured reports</p>
+                </div>
+                <i class="fa-solid fa-file-waveform metric-icon"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-xl-8">
+        <div class="content-card h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <div class="section-label">Recent Activity</div>
+                    <h4 class="mb-0">Latest records</h4>
+                </div>
+                <a href="{% url 'analytics' %}" class="btn btn-sm btn-outline-primary">Open analytics</a>
+            </div>
+            <div id="recent-activity-list" class="activity-stack"></div>
+        </div>
+    </div>
+
+    <div class="col-xl-4">
+        <div class="content-card h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <div class="section-label">Quick Actions</div>
+                    <h4 class="mb-0">Shortcuts</h4>
+                </div>
+            </div>
+            <div class="d-grid gap-2">
+                <a href="{% url 'upload' %}" class="btn btn-outline-primary text-start">
+                    <i class="fa-solid fa-cloud-arrow-up me-2"></i>
+                    Upload new document
+                </a>
+                <a href="{% url 'prescriptions' %}" class="btn btn-outline-primary text-start">
+                    <i class="fa-solid fa-folder-open me-2"></i>
+                    Review prescriptions
+                </a>
+                <a href="{% url 'medicines' %}" class="btn btn-outline-primary text-start">
+                    <i class="fa-solid fa-pills me-2"></i>
+                    Manage medicines
+                </a>
+                <a href="{% url 'reminders' %}" class="btn btn-outline-primary text-start">
+                    <i class="fa-solid fa-bell-concierge me-2"></i>
+                    Today's reminders
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-lg-7">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <div class="section-label">Recent Prescriptions</div>
+                    <h4 class="mb-0">Most recent prescriptions</h4>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Patient</th>
+                            <th>Doctor</th>
+                            <th>Date</th>
+                            <th>Medicines</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dashboard-prescriptions-body">
+                        <tr>
+                            <td colspan="4">
+                                <div class="skeleton" style="height: 22px;"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="content-card h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <div class="section-label">Today</div>
+                    <h4 class="mb-0">Schedule snapshot</h4>
+                </div>
+                <span class="badge bg-primary rounded-pill" id="today-reminder-count">0 items</span>
+            </div>
+            <div id="dashboard-reminders-list"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-12">
+        <div class="content-card animate-fade-up" id="dashboard-workout-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <div class="section-label">Workout</div>
+                    <h4 class="mb-0">Daily workout snapshot</h4>
+                </div>
+                <span class="badge bg-success rounded-pill" id="workout-goal-badge">Goal 30 min</span>
+            </div>
+            <div class="row g-3 align-items-center">
+                <div class="col-lg-4">
+                    <div class="schedule-card mb-0">
+                        <div class="time">Today</div>
+                        <div class="name" id="workout-summary-text">Workout plan is enabled.</div>
+                        <div class="meta" id="workout-summary-meta">Use Settings to change the goal.</div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted">Completion</span>
+                        <span id="workout-progress-label">0%</span>
+                    </div>
+                    <div class="progress" style="height: 10px;">
+                        <div class="progress-bar bg-success" id="workout-progress-bar" style="width: 0%;"></div>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mt-3">
+                        <span class="badge bg-light text-dark rounded-pill">Walk</span>
+                        <span class="badge bg-light text-dark rounded-pill">Stretch</span>
+                        <span class="badge bg-light text-dark rounded-pill">Strength</span>
+                        <span class="badge bg-light text-dark rounded-pill">Hydrate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-12">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <div class="section-label">Uploaded Documents</div>
+                    <h4 class="mb-0">Recent files</h4>
+                </div>
+            </div>
+            <div id="recent-documents-list" class="activity-stack"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-12">
+        <div class="content-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <div class="section-label">Recent Reports</div>
+                    <h4 class="mb-0">Structured findings</h4>
+                </div>
+            </div>
+            <div id="recent-reports-list" class="activity-stack"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

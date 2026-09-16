@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Prescriptions{% endblock %}
+
+{% block content %}
+<div class="page-header animate-fade-up">
+    <div>
+        <div class="page-kicker">Records</div>
+        <h1 class="page-title">Prescriptions</h1>
+        <p class="page-subtitle">Browse prescriptions extracted from uploaded documents and inspect the medicines attached to each one.</p>
+    </div>
+</div>
+
+<div class="content-card animate-fade-up">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <div class="section-label">Prescription list</div>
+            <h4 class="mb-0">Recent records</h4>
+        </div>
+    </div>
+    <div id="prescription-list" class="prescription-list"></div>
+</div>
+
+<div class="modal fade" id="prescriptionDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <div class="section-label mb-1">Prescription detail</div>
+                    <h5 class="modal-title mb-0" id="prescription-detail-title">Prescription</h5>
+                </div>
+                <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="prescription-detail-content"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-danger me-auto" type="button" id="delete-prescription-btn" onclick="window.deleteCurrentPrescription && window.deleteCurrentPrescription(); return false;">Delete prescription</button>
+                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deletePrescriptionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mb-0">Delete prescription</h5>
+                <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">This will permanently delete the prescription, its uploaded document, medicines, schedules, reminders, and logs.</p>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="delete-prescription-id">
+                <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger" type="button" id="confirm-delete-prescription-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/prescriptions.js' %}"></script>
+{% endblock %}

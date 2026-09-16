@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Upload Medical Document{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/upload.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header animate-fade-up">
+    <div>
+        <div class="page-kicker">AI Extraction</div>
+        <h1 class="page-title">Upload Medical Document</h1>
+        <p class="page-subtitle">Drop a printed prescription for OCR, or a handwritten document for Gemini, and create prescriptions, appointments, or reports from the extracted data.</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-xl-7">
+        <div class="upload-card animate-fade-up">
+            <div class="row g-3 mb-4 text-start">
+                <div class="col-md-6">
+                    <label class="form-label">Document type</label>
+                    <select class="form-select" id="document-type">
+                        <option value="Prescription" selected>Prescription</option>
+                        <option value="Appointment">Appointment</option>
+                        <option value="Blood Report">Blood Report</option>
+                        <option value="MRI">MRI</option>
+                        <option value="ECG">ECG</option>
+                        <option value="X-Ray">X-Ray</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-control" id="document-title" placeholder="Optional title">
+                </div>
+                <div class="col-12">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" rows="3" id="document-description" placeholder="Optional notes about the document"></textarea>
+                </div>
+            </div>
+            <div id="drop-zone" class="drop-zone">
+                <div class="upload-hero">
+                    <div class="upload-icon-wrap">
+                        <i class="fa-solid fa-file-arrow-up upload-icon"></i>
+                    </div>
+                    <h3>Drag and drop medical document</h3>
+                    <p class="text-muted mb-3">or browse a file from your device</p>
+                    <label class="btn btn-primary px-4" for="file-input">Browse File</label>
+                    <input type="file" id="file-input" hidden accept=".pdf,.png,.jpg,.jpeg">
+                </div>
+            </div>
+
+            <div class="supported-files mt-4">
+                <span class="badge bg-danger">PDF</span>
+                <span class="badge bg-success">JPG</span>
+                <span class="badge bg-primary">PNG</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-5">
+        <div class="content-card animate-fade-up h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <div class="section-label">Selected File</div>
+                    <h4 class="mb-0">Preview</h4>
+                </div>
+            </div>
+            <div id="preview-content" class="preview-content">
+                <div class="empty-state w-100">
+                    <i class="fa-regular fa-file"></i>
+                    <h5 class="mb-2">No file selected</h5>
+                    <p class="mb-0">Choose a medical document to begin extraction.</p>
+                </div>
+            </div>
+            <button class="btn btn-primary w-100 mt-3" id="upload-btn" disabled>
+                <i class="fa-solid fa-cloud-arrow-up me-2"></i>
+                Upload Document
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <div class="content-card animate-fade-up">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <div>
+                <div class="section-label">Processing</div>
+                <h4 class="mb-0">Status and result</h4>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="spinner-border spinner-border-sm text-primary d-none" id="upload-spinner" role="status"></div>
+                <span class="text-muted" id="upload-helper">Ready to upload</span>
+            </div>
+        </div>
+
+        <div class="progress-section mb-4" id="progress-section">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" id="upload-progress" style="width: 0%;">0%</div>
+            </div>
+        </div>
+
+        <div class="status-card mb-4" id="status-card">
+            <h5 class="mb-3">Workflow steps</h5>
+            <ul id="status-list" class="status-list">
+                <li>Waiting for upload.</li>
+            </ul>
+        </div>
+
+        <div class="result-card" id="result-card">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <div class="section-label">Success</div>
+                    <h4 class="mb-0">Upload result</h4>
+                </div>
+                <span class="badge bg-success rounded-pill" id="result-status">Completed</span>
+            </div>
+
+            <div class="row g-3 mb-4" id="summary-cards"></div>
+
+            <div class="timeline-card mb-4">
+                <h5 class="mb-3">Workflow timeline</h5>
+                <div id="timeline"></div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="detail-card h-100">
+                        <h5 class="mb-3">Document details</h5>
+                        <div id="document-info"></div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="detail-card h-100">
+                        <h5 class="mb-3">Workflow details</h5>
+                        <div id="prescription-info"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h5 class="mb-3">Medicines</h5>
+                <div id="medicine-table"></div>
+            </div>
+
+            <div class="mt-4">
+                <h5 class="mb-3">AI extracted data</h5>
+                <textarea class="form-control" rows="8" id="ai-result" readonly></textarea>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-end gap-2 mt-4">
+                <button class="btn btn-outline-primary" id="new-upload-btn" type="button">Upload another</button>
+                <button class="btn btn-success d-none" id="save-prescription-btn" type="button">Create prescription</button>
+                <button class="btn btn-success d-none" id="save-appointment-btn" type="button">Create appointment</button>
+                <button class="btn btn-success d-none" id="save-report-btn" type="button">Create report</button>
+                <a class="btn btn-primary" id="view-medicines-btn" href="{% url 'medicines' %}">View medicines</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <div class="content-card animate-fade-up">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <div class="section-label">Existing files</div>
+                <h4 class="mb-0">Uploaded records</h4>
+            </div>
+            <button class="btn btn-outline-primary btn-sm" type="button" id="refresh-documents-btn">
+                Refresh
+            </button>
+        </div>
+        <div id="document-list"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteDocumentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mb-0">Delete document</h5>
+                <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">This will permanently delete the uploaded file, its prescription records, medicines, schedules, and related logs.</p>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="delete-document-id">
+                <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger" type="button" id="confirm-delete-document-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/upload.js' %}"></script>
+{% endblock %}

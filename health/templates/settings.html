@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<div class="page-header animate-fade-up">
+    <div>
+        <div class="page-kicker">Preferences</div>
+        <h1 class="page-title">Settings</h1>
+        <p class="page-subtitle">Manage a few local preferences for the demo workspace, including the visual theme.</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="content-card animate-fade-up h-100">
+            <div class="section-label">Appearance</div>
+            <h4 class="mb-3">Theme preference</h4>
+            <p class="text-muted">Use the header toggle to switch between light and dark mode. The choice is stored locally in your browser.</p>
+            <button class="btn btn-primary" type="button" id="theme-toggle-settings">Toggle theme</button>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="content-card animate-fade-up h-100">
+            <div class="section-label">Workspace</div>
+            <h4 class="mb-3">Quick reset</h4>
+            <p class="text-muted">Reload the page to clear temporary UI state like selected filters and previews.</p>
+            <button class="btn btn-outline-primary" type="button" id="workspace-refresh">Refresh workspace</button>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-12">
+        <div class="content-card animate-fade-up">
+            <div class="section-label">Dashboard widgets</div>
+            <h4 class="mb-3">Workout snapshot</h4>
+            <p class="text-muted">Turn on a workout card on the dashboard and set a daily goal in minutes. The preference is saved in your browser.</p>
+            <div class="row g-3 align-items-end">
+                <div class="col-lg-5">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="workout-widget-toggle">
+                        <label class="form-check-label" for="workout-widget-toggle">Show workout card on dashboard</label>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <label class="form-label" for="workout-goal-minutes">Daily workout goal</label>
+                    <input class="form-control" type="number" min="5" step="5" id="workout-goal-minutes" placeholder="30">
+                </div>
+                <div class="col-lg-3 text-lg-end">
+                    <button class="btn btn-primary" type="button" id="save-workout-settings">Save workout settings</button>
+                </div>
+            </div>
+            <div class="form-text mt-3">When enabled, the dashboard will show a simple workout target card based on this goal.</div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/settings.js' %}"></script>
+{% endblock %}

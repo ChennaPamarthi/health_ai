@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+<div class="page-header animate-fade-up">
+    <div>
+        <div class="page-kicker">Medical documents</div>
+        <h1 class="page-title">Reports</h1>
+        <p class="page-subtitle">Review blood reports, X-rays, MRI, ECG, and other uploaded medical reports extracted by the AI vision workflow.</p>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="summary-box">
+            <i class="fa-solid fa-file-waveform fa-2x text-primary"></i>
+            <h3 id="report-total">0</h3>
+            <p>Total reports</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="summary-box">
+            <i class="fa-solid fa-vial fa-2x text-danger"></i>
+            <h3 id="report-blood">0</h3>
+            <p>Blood reports</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="summary-box">
+            <i class="fa-solid fa-x-ray fa-2x text-warning"></i>
+            <h3 id="report-scan">0</h3>
+            <p>Scans</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="summary-box">
+            <i class="fa-solid fa-calendar-day fa-2x text-success"></i>
+            <h3 id="report-recent">0</h3>
+            <p>This month</p>
+        </div>
+    </div>
+</div>
+
+<div class="content-card animate-fade-up">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <div class="section-label">Report list</div>
+            <h4 class="mb-0">Extracted records</h4>
+        </div>
+        <a href="{% url 'upload' %}" class="btn btn-primary btn-sm">Upload report</a>
+    </div>
+    <div id="report-list" class="activity-stack"></div>
+</div>
+
+<div class="modal fade" id="reportDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <div class="section-label mb-1">Report detail</div>
+                    <h5 class="modal-title mb-0" id="report-detail-title">Report</h5>
+                </div>
+                <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="report-detail-content"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/reports.js' %}"></script>
+{% endblock %}

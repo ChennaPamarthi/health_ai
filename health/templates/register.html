@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <div class="content-card animate-fade-up">
+        <div class="text-center mb-4">
+            <div class="brand-mark mx-auto mb-3">
+                <i class="fa-solid fa-heart-pulse"></i>
+            </div>
+            <h1 class="h3 fw-bold mb-2">Create account</h1>
+            <p class="text-muted mb-0">Create your Django login and patient profile in one step.</p>
+        </div>
+
+        {% if error_message %}
+            <div class="alert alert-danger">{{ error_message }}</div>
+        {% endif %}
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" value="{{ form.username.value|default:'' }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" value="{{ form.email.value|default:'' }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">First name</label>
+                    <input type="text" name="first_name" class="form-control" value="{{ form.first_name.value|default:'' }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Last name</label>
+                    <input type="text" name="last_name" class="form-control" value="{{ form.last_name.value|default:'' }}">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password1" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Confirm password</label>
+                    <input type="password" name="password2" class="form-control" required>
+                </div>
+            </div>
+
+            {% if form.errors %}
+                <div class="alert alert-danger mt-3 mb-0">
+                    Please review the form fields and try again.
+                </div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-primary w-100 mt-3">Create account</button>
+        </form>
+
+        <div class="text-center mt-3">
+            <span class="text-muted">Already have an account?</span>
+            <a href="{% url 'login' %}">Sign in</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

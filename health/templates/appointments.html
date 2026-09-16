@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Appointments{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/appointment.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header animate-fade-up">
+    <div>
+        <div class="page-kicker">Care schedule</div>
+        <h1 class="page-title">Appointments</h1>
+        <p class="page-subtitle">Review upcoming, completed, and cancelled appointments pulled from the backend records.</p>
+    </div>
+</div>
+
+<div class="row g-3 mb-4" id="appointment-stats">
+    <div class="col-md-3">
+        <div class="appointment-stat stat-blue">
+            <h2 id="appointment-total">0</h2>
+            <p>Total</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="appointment-stat stat-green">
+            <h2 id="appointment-upcoming">0</h2>
+            <p>Upcoming</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="appointment-stat stat-amber">
+            <h2 id="appointment-completed">0</h2>
+            <p>Completed</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="appointment-stat stat-rose">
+            <h2 id="appointment-cancelled">0</h2>
+            <p>Cancelled</p>
+        </div>
+    </div>
+</div>
+
+<div class="content-card animate-fade-up">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <div class="section-label">Appointment list</div>
+            <h4 class="mb-0">All records</h4>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th class="text-end">Action</th>
+                </tr>
+            </thead>
+            <tbody id="appointment-table-body">
+                <tr>
+                    <td colspan="6">
+                        <div class="skeleton" style="height: 24px;"></div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
+        <p class="text-muted mb-0" id="appointment-summary">Showing 0 appointments</p>
+    </div>
+</div>
+
+<div class="modal fade" id="appointmentDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <div class="section-label mb-1">Appointment detail</div>
+                    <h5 class="modal-title mb-0" id="appointment-detail-title">Appointment</h5>
+                </div>
+                <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="appointment-detail-content"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/appointment.js' %}"></script>
+{% endblock %}
+

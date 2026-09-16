@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Medicines{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/medicine.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header animate-fade-up">
+    <div>
+        <div class="page-kicker">Medication tracking</div>
+        <h1 class="page-title">Medicines</h1>
+        <p class="page-subtitle">Search, inspect, edit, and update medicines created from extracted prescriptions.</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+        <a href="{% url 'upload' %}" class="btn btn-primary">
+            <i class="fa-solid fa-cloud-arrow-up me-2"></i>
+            Upload Prescription
+        </a>
+    </div>
+</div>
+
+<div class="medicine-toolbar animate-fade-up mb-4">
+    <div class="row g-3 align-items-center">
+        <div class="col-lg-5">
+            <input type="text" class="form-control" id="medicine-search" placeholder="Search by medicine, dosage, or doctor">
+        </div>
+        <div class="col-lg-7 text-lg-end">
+            <div class="filter-group" id="medicine-filters">
+                <button class="btn btn-outline-primary filter-btn active" data-filter="all" type="button">All</button>
+                <button class="btn btn-outline-primary filter-btn" data-filter="Taken" type="button">Taken</button>
+                <button class="btn btn-outline-primary filter-btn" data-filter="Pending" type="button">Pending</button>
+                <button class="btn btn-outline-primary filter-btn" data-filter="Missed" type="button">Missed</button>
+                <button class="btn btn-outline-primary filter-btn" data-filter="Active" type="button">Active</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4" id="medicine-stats">
+    <div class="col-lg-3 col-md-6">
+        <div class="medicine-stat blue">
+            <i class="fa-solid fa-pills"></i>
+            <h2 id="total-count">0</h2>
+            <p>Total medicines</p>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="medicine-stat green">
+            <i class="fa-solid fa-circle-check"></i>
+            <h2 id="taken-count">0</h2>
+            <p>Taken today</p>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="medicine-stat orange">
+            <i class="fa-solid fa-clock"></i>
+            <h2 id="pending-count">0</h2>
+            <p>Pending</p>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="medicine-stat red">
+            <i class="fa-solid fa-calendar-day"></i>
+            <h2 id="today-count">0</h2>
+            <p>Today's schedule</p>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-xl-8">
+        <div class="content-card animate-fade-up h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <div class="section-label">Medicine list</div>
+                    <h4 class="mb-0">Extracted medicines</h4>
+                </div>
+                <span class="badge bg-primary rounded-pill" id="medicine-total">0 medicines</span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Medicine</th>
+                            <th>Dosage</th>
+                            <th>Frequency</th>
+                            <th>Status</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="medicine-table-body">
+                        <tr>
+                            <td colspan="5">
+                                <div class="skeleton" style="height: 24px;"></div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center gap-3 mt-3 flex-wrap">
+                <p class="text-muted mb-0" id="medicine-page-summary">Showing 0 of 0 medicines</p>
+                <nav aria-label="Medicine pagination">
+                    <ul class="pagination mb-0" id="medicine-pagination"></ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-4">
+        <div class="content-card animate-fade-up h-100">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <div class="section-label">Today's schedule</div>
+                    <h4 class="mb-0">Reminders</h4>
+                </div>
+                <span class="badge bg-warning text-dark rounded-pill" id="schedule-count">0 items</span>
+            </div>
+            <div id="schedule-list"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="medicineDetailModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <div class="section-label mb-1">Medicine detail</div>
+                    <h5 class="modal-title mb-0" id="medicine-detail-title">Medicine</h5>
+                </div>
+                <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="medicine-detail-content" class="detail-grid"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-primary" type="button" id="medicine-detail-edit-btn">Edit</button>
+                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="medicineEditModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <form id="medicine-edit-form">
+                <div class="modal-header">
+                    <div>
+                        <div class="section-label mb-1">Edit medicine</div>
+                        <h5 class="modal-title mb-0">Update details</h5>
+                    </div>
+                    <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="medicine-edit-id">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Medicine name</label>
+                            <input type="text" class="form-control" id="medicine-edit-name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Strength</label>
+                            <input type="text" class="form-control" id="medicine-edit-strength">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Dosage</label>
+                            <input type="text" class="form-control" id="medicine-edit-dosage">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Quantity</label>
+                            <input type="number" min="1" class="form-control" id="medicine-edit-quantity">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Frequency</label>
+                            <input type="text" class="form-control" id="medicine-edit-frequency" placeholder="Morning, Night">
+                            <div class="form-text">Enter comma-separated values like Morning, Afternoon, Night.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Duration</label>
+                            <input type="text" class="form-control" id="medicine-edit-duration">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Food instruction</label>
+                            <select class="form-select" id="medicine-edit-food">
+                                <option value="Before Food">Before Food</option>
+                                <option value="After Food">After Food</option>
+                                <option value="With Food">With Food</option>
+                                <option value="Anytime">Anytime</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Special instruction</label>
+                            <textarea class="form-control" rows="3" id="medicine-edit-special"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="medicine-edit-active" checked>
+                                <label class="form-check-label" for="medicine-edit-active">Medicine is active</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" type="submit" id="medicine-save-btn">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteMedicineModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mb-0">Delete medicine</h5>
+                <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">This will permanently delete the medicine and its related schedules and logs.</p>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="delete-medicine-id">
+                <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger" type="button" id="confirm-delete-medicine-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteScheduleModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title mb-0">Delete schedule</h5>
+                <button class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">This will permanently delete the selected medicine schedule and its reminder history.</p>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="delete-schedule-id">
+                <button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger" type="button" id="confirm-delete-schedule-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/medicine.js' %}"></script>
+{% endblock %}

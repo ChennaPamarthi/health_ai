@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Caregivers{% endblock %}
+
+{% block content %}
+<div class="page-header animate-fade-up">
+    <div>
+        <div class="page-kicker">Family safety net</div>
+        <h1 class="page-title">Caregivers</h1>
+        <p class="page-subtitle">Register trusted contacts for missed medicine alerts and review the current medicine plan they help support.</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-xl-5">
+        <div class="content-card animate-fade-up h-100">
+            <div class="section-label">Caregiver alerts</div>
+            <h4 class="mb-3">Add caregiver</h4>
+            <p class="text-muted">If a medicine is not marked as taken within 10 minutes, the patient receives a missed-dose email and enabled caregivers are alerted.</p>
+            <form id="caregiver-form" class="row g-3">
+                <input type="hidden" id="caregiver-id">
+                <div class="col-12">
+                    <label class="form-label" for="caregiver-name">Caregiver name</label>
+                    <input class="form-control" id="caregiver-name" type="text" placeholder="Family member name" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="caregiver-relationship">Relationship</label>
+                    <input class="form-control" id="caregiver-relationship" type="text" placeholder="Mother, brother, nurse">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="caregiver-preference">Alert type</label>
+                    <select class="form-select" id="caregiver-preference">
+                        <option value="email">Email</option>
+                        <option value="sms">SMS</option>
+                        <option value="email_sms">Email + SMS</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="caregiver-email">Email</label>
+                    <input class="form-control" id="caregiver-email" type="email" placeholder="caregiver@example.com">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="caregiver-phone">Phone</label>
+                    <input class="form-control" id="caregiver-phone" type="tel" placeholder="+91...">
+                </div>
+                <div class="col-md-6">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="caregiver-enabled" checked>
+                        <label class="form-check-label" for="caregiver-enabled">Enable alerts</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="caregiver-primary">
+                        <label class="form-check-label" for="caregiver-primary">Primary caregiver</label>
+                    </div>
+                </div>
+                <div class="col-12 d-flex gap-2">
+                    <button class="btn btn-primary" type="submit" id="save-caregiver-btn">Save caregiver</button>
+                    <button class="btn btn-outline-secondary d-none" type="button" id="cancel-caregiver-edit">Cancel edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-xl-7">
+        <div class="content-card animate-fade-up h-100">
+            <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+                <div>
+                    <div class="section-label">Registered caregivers</div>
+                    <h4 class="mb-1">Caregiver list</h4>
+                    <p class="text-muted mb-0">These contacts are saved in the backend and appear in Django admin.</p>
+                </div>
+                <button class="btn btn-outline-primary btn-sm" type="button" id="refresh-caregivers">Refresh</button>
+            </div>
+            <div id="caregiver-list"></div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-lg-4">
+        <div class="content-card animate-fade-up h-100">
+            <div class="section-label">Care plan</div>
+            <h4 class="mb-3">Medicine alert summary</h4>
+            <div id="caregiver-care-summary"></div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="content-card animate-fade-up h-100">
+            <div class="section-label">Prescription information</div>
+            <h4 class="mb-3">Recent medicines</h4>
+            <div id="caregiver-medicine-list"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/caregivers.js' %}"></script>
+{% endblock %}

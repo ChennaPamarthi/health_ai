@@ -1,0 +1,61 @@
+.analytics-daily {
+    display: grid;
+    gap: 14px;
+}
+
+.analytics-day {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 16px;
+}
+
+.analytics-day .day-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.analytics-day .progress {
+    height: 12px;
+    border-radius: 999px;
+}
+
+.analytics-day .day-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 0.88rem;
+}
+
+.analytics-card {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 16px;
+}
+
+.analytics-activity-item {
+    padding: 12px 0;
+    border-bottom: 1px dashed rgba(100, 116, 139, 0.16);
+}
+
+.analytics-activity-item:last-child {
+    border-bottom: none;
+}
+
+.analytics-missed-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px dashed rgba(100, 116, 139, 0.16);
+}
+
+.analytics-missed-item:last-child {
+    border-bottom: none;
+}
